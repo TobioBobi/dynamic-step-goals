@@ -61,16 +61,14 @@ public class MainPageViewModel : INotifyPropertyChanged
 
     private async Task LoadInitialStateAsync()
     {
-        var today = DateOnly.FromDateTime(DateTime.Today);
+        var yesterday = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
 
-        var todayEntry = await _storageService.GetByDateAsync(today);
+        var yesterdaysEntry = await _storageService.GetByDateAsync(yesterday);
 
-        if (todayEntry != null)
-            TodayGoal = todayEntry.Goal;
+        if (yesterdaysEntry != null)
+            TodayGoal = _stepGoalService.CalculateTomorrowGoal(yesterdaysEntry, await _storageService.GetAllAsync());
         else
-            TodayGoal = 1;
-
-        TomorrowGoal = TodayGoal + 300;
+            TodayGoal = 3000;
     }
 
     private async Task SaveStepsAsync()
@@ -83,16 +81,13 @@ public class MainPageViewModel : INotifyPropertyChanged
         var entry = new DailyStepEntry
         {
             Date = today,
-            ActualSteps = todaySteps,
+            CurrentSteps = todaySteps,
             Goal = TodayGoal
         };
 
         await _storageService.AddOrUpdateAsync(entry);
 
-        var result = _stepGoalService.CalculateGoals(todaySteps, TodayGoal);
-
-        TodayGoal = result.todayGoal;
-        TomorrowGoal = result.tomorrowGoal;
+        TomorrowGoal = _stepGoalService.CalculateTomorrowGoal(entry, await _storageService.GetAllAsync());
 
         TodayStepsInput = string.Empty;
     }

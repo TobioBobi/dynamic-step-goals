@@ -10,6 +10,6 @@ namespace dynamic_step_goals.Models
     {
         public DateOnly Date { get; set; }
         public int Goal { get; set; }
-        public int ActualSteps { get; set; }
+        public int CurrentSteps { get; set; }
     }
 }
