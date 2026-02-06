@@ -1,3 +1,4 @@
+using dynamic_step_goals.Services;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -6,9 +7,12 @@ namespace dynamic_step_goals.PageModels;
 
 public class MainPageViewModel : INotifyPropertyChanged
 {
+    #region Properties
+
     private int _todayGoal = 8000;
     private int _tomorrowGoal = 8300;
     private string _todayStepsInput = string.Empty;
+    private StepGoalService StepGoalService = new StepGoalService();
 
     public int TodayGoal
     {
@@ -30,17 +34,20 @@ public class MainPageViewModel : INotifyPropertyChanged
 
     public ICommand SaveStepsCommand { get; }
 
+    #endregion
+
     public MainPageViewModel()
     {
-        SaveStepsCommand = new Command(() =>
-        {
-            // Dummy-Verhalten für jetzt:
-            // Beim Klick verändern wir einfach die Ziele,
-            // damit du siehst, dass Binding funktioniert.
-            TodayGoal += 100;
-            TomorrowGoal += 150;
-            TodayStepsInput = string.Empty;
-        });
+        SaveStepsCommand = new Command(SaveSteps);
+    }
+
+    private void SaveSteps()
+    {
+        if (!int.TryParse(TodayStepsInput, out var todaysSteps))
+            return;
+
+        TomorrowGoal = StepGoalService.CalculateTomorrowGoal(todaysSteps);
+        TodayStepsInput = string.Empty;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
