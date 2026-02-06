@@ -1,10 +1,5 @@
 ﻿using dynamic_step_goals.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace dynamic_step_goals.Services
 {

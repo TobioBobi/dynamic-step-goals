@@ -12,5 +12,10 @@ namespace dynamic_step_goals.Services
         {
             return todaysSteps + 100;
         }
+
+        internal (int todayGoal, int tomorrowGoal) CalculateGoals(int todaySteps, int todayGoal)
+        {
+            return (5, 10);
+        }
     }
 }
