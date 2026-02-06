@@ -1,0 +1,44 @@
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="dynamic_step_goals.Pages.MainPage">
+
+    <VerticalStackLayout Padding="24" Spacing="16">
+
+        <Label
+            Text="Dynamic Step Goals"
+            FontSize="24"
+            HorizontalOptions="Center" />
+
+        <Border Stroke="Gray" StrokeThickness="1" Padding="8" Margin="0,8">
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Heutiges Schrittziel" />
+                <Label
+                    Text="{Binding TodayGoal}"
+                    FontSize="20"
+                    FontAttributes="Bold" />
+            </VerticalStackLayout>
+        </Border>
+
+        <Border Stroke="Gray" StrokeThickness="1" Padding="8" Margin="0,8">
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Ziel für morgen (Vorschau)" />
+                <Label
+                    Text="{Binding TomorrowGoal}"
+                    FontSize="20"
+                    FontAttributes="Bold" />
+            </VerticalStackLayout>
+        </Border>
+
+        <Entry
+            Placeholder="Heute gelaufene Schritte"
+            Keyboard="Numeric"
+            Text="{Binding TodayStepsInput}" />
+
+        <Button
+            Text="Schritte speichern"
+            Command="{Binding SaveStepsCommand}" />
+
+    </VerticalStackLayout>
+
+</ContentPage>
