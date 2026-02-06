@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36915.13 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dynamic-step-goals", "dynamic-step-goals\dynamic-step-goals.csproj", "{D6F8AD65-69AE-4973-A772-0AA74A287DD1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6F8AD65-69AE-4973-A772-0AA74A287DD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6F8AD65-69AE-4973-A772-0AA74A287DD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6F8AD65-69AE-4973-A772-0AA74A287DD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6F8AD65-69AE-4973-A772-0AA74A287DD1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {42D18FD8-C09C-4DEC-8A33-2EC91DDFBF70}
+	EndGlobalSection
+EndGlobal
