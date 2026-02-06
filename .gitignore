@@ -59,3 +59,5 @@ TestResults/
 # Temporary files
 *.tmp
 *.temp
+
+.github

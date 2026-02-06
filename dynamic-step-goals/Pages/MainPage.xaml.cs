@@ -1,14 +1,18 @@
-﻿using dynamic_step_goals.Models;
-using dynamic_step_goals.PageModels;
-
-namespace dynamic_step_goals.Pages
+﻿namespace dynamic_step_goals.Pages
 {
-    public partial class MainPage : ContentPage
+    public class MainPage : ContentPage
     {
-        public MainPage(MainPageModel model)
+        public MainPage()
         {
-            InitializeComponent();
-            BindingContext = model;
+            Content = new VerticalStackLayout
+            {
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                Children =
+                {
+                    new Label { Text = "Hello World", FontSize = 32 }
+                }
+            };
         }
     }
 }
