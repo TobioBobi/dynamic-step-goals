@@ -10,8 +10,8 @@ public class MainPageViewModel : INotifyPropertyChanged
 {
     #region Properties
 
-    private int _todayGoal = 8000;
-    private int _tomorrowGoal = 8300;
+    private int _todayGoal = 500;
+    private int _tomorrowGoal = 0;
     private string _todayStepsInput = string.Empty;
     private StepGoalService _stepGoalService = new StepGoalService();
     private DailyStepStorageService _storageService = new DailyStepStorageService();
@@ -61,15 +61,24 @@ public class MainPageViewModel : INotifyPropertyChanged
 
     private async Task LoadInitialStateAsync()
     {
-        var yesterday = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var tomorrow = today.AddDays(1);
 
-        var yesterdaysEntry = await _storageService.GetByDateAsync(yesterday);
+        var todaysEntry = await _storageService.GetByDateAsync(today);
+        if (todaysEntry != null)
+            TodayGoal = todaysEntry.Goal;
 
-        if (yesterdaysEntry != null)
-            TodayGoal = _stepGoalService.CalculateTomorrowGoal(yesterdaysEntry, await _storageService.GetAllAsync());
-        else
-            TodayGoal = 3000;
+        var tomorrowsEntry = await _storageService.GetByDateAsync(tomorrow);
+        if (tomorrowsEntry != null)
+            TomorrowGoal = tomorrowsEntry.Goal;
+        else if (todaysEntry != null)
+        {
+            TomorrowGoal = _stepGoalService.CalculateTomorrowGoal(
+                todaysEntry,
+                await _storageService.GetAllAsync());
+        }
     }
+
 
     private async Task SaveStepsAsync()
     {
@@ -77,17 +86,24 @@ public class MainPageViewModel : INotifyPropertyChanged
             return;
 
         var today = DateOnly.FromDateTime(DateTime.Today);
-
-        var entry = new DailyStepEntry
+        var todayEntry = new DailyStepEntry
         {
             Date = today,
             CurrentSteps = todaySteps,
             Goal = TodayGoal
         };
+        await _storageService.AddOrUpdateAsync(todayEntry);
 
-        await _storageService.AddOrUpdateAsync(entry);
+        TomorrowGoal = _stepGoalService.CalculateTomorrowGoal(todayEntry, await _storageService.GetAllAsync());
 
-        TomorrowGoal = _stepGoalService.CalculateTomorrowGoal(entry, await _storageService.GetAllAsync());
+        var tomorrow = today.AddDays(1);
+        var tomorrowEntry = new DailyStepEntry
+        {
+            Date = tomorrow,
+            CurrentSteps = 0,
+            Goal = TomorrowGoal
+        };
+        await _storageService.AddOrUpdateAsync(tomorrowEntry);
 
         TodayStepsInput = string.Empty;
     }
