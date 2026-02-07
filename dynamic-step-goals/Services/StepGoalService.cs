@@ -7,22 +7,20 @@ namespace dynamic_step_goals.Services
 
         public int CalculateTomorrowGoal(DailyStepEntry dailyStepEntry, List<DailyStepEntry> history)
         {
+            const double adjustmentFactor = 0.3;
+            const int maxIncrease = 800;
+            const int maxDecrease = 500;
+
             var delta = dailyStepEntry.CurrentSteps - dailyStepEntry.Goal;
-            int adjustment;
+            var relativeDelta = (double)delta / dailyStepEntry.Goal;
 
-            // If the goal was exceeded by at least 1000 steps
-            if (delta >= 1000)
-                adjustment = 500; // Increase tomorrow's goal by 500 steps
-            // If the goal was almost reached (no more than 500 steps below the goal)
-            else if (delta >= -500)
-                adjustment = 200; // Moderately increase tomorrow's goal
-            // If the goal was missed by more than 500 steps
-            else
-                adjustment = -200; // Decrease tomorrow's goal
+            var rawAdjustment = dailyStepEntry.Goal * relativeDelta * adjustmentFactor;
+            var adjustment = (int)Math.Round(rawAdjustment);
 
-            return dailyStepEntry.Goal + adjustment;
+            adjustment = Math.Clamp(adjustment, -maxDecrease, maxIncrease);
+
+            var tomorrowGoal = dailyStepEntry.Goal + adjustment;
+            return tomorrowGoal;
         }
-
-
     }
 }
